@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import GlobalStyle from './styles/GlobalStyle';
 import { MdAutorenew } from 'react-icons/md';
 import SingleQuote from './components/SingleQuote';
+import QuoteList from './components/QuoteList';
 
 const Container = styled.div`
     display: flex;
@@ -13,12 +14,14 @@ const Container = styled.div`
 
 const Header = styled.header`
     align-self: flex-end;
+`;
+
+const RandomLink = styled.a`
     display: flex;
+    color: #4f4f4f;
 
-    a {
+    span {
         margin-right: 0.625rem;
-
-        color: #4f4f4f;
     }
 `;
 
@@ -48,10 +51,26 @@ const App = () => {
 
     const fetchRandomQuote = async () => {
         setLoading(true);
-        await fetch('https://quote-garden.herokuapp.com/api/v2/quotes/random')
-            .then((result) => result.json())
-            .then((data) => setQuote(data.quote))
-            .then(setLoading(false));
+        setTimeout(async () => {
+            await fetch(
+                `https://quote-garden.herokuapp.com/api/v2/quotes/random`
+            )
+                .then((result) => result.json())
+                .then((data) => setQuote(data.quote))
+                .then(setLoading(false));
+        }, 1500);
+    };
+
+    const clickHandler = async (author) => {
+        setLoading(true);
+        setTimeout(async () => {
+            await fetch(
+                `https://quote-garden.herokuapp.com/api/v2/authors/${author}`
+            )
+                .then((result) => result.json())
+                .then((data) => setQuote(data.quote))
+                .then(setLoading(false));
+        }, 1500);
     };
 
     useEffect(() => {
@@ -61,17 +80,13 @@ const App = () => {
     return (
         <Container>
             <Header>
-                <a href='#' onClick={fetchRandomQuote}>
-                    random
-                </a>
-                <MdAutorenew fontSize='large' color='#4f4f4f' />
+                <RandomLink href='#' onClick={fetchRandomQuote}>
+                    <span>random</span>
+                    <MdAutorenew fontSize='large' color='#4f4f4f' />
+                </RandomLink>
             </Header>
             <Main>
-                {loading ? (
-                    <h1 style={{ color: 'pink' }}>Loading ...</h1>
-                ) : (
-                    <SingleQuote quote={quote} />
-                )}
+                {loading ? <h1>Loading ...</h1> : <SingleQuote quote={quote} />}
             </Main>
             <Footer>
                 <a

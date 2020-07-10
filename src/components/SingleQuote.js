@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Author from './Author';
 
 const Quote = styled.div`
     border-left: 0.5rem solid #f7df94;
@@ -9,27 +10,13 @@ const Quote = styled.div`
     width: 45rem;
 `;
 
-const Author = styled.h2`
-    font-weight: 700;
-    margin-top: 10rem;
-    color: #4f4f4f;
-    margin-left: 6.75rem;
-`;
-
-const Genre = styled.p`
-    color: #828282;
-    margin-top: 0.5rem;
-    margin-left: 6.75rem;
-`;
-
-const SingleQuote = ({ quote }) => {
+const SingleQuote = ({ quote, clickHandler }) => {
     const { quoteText, quoteAuthor, quoteGenre } = quote;
 
     return (
-        <div>
-            <Quote>{quoteText}</Quote>
-            <Author>{quoteAuthor}</Author>
-            <Genre>{quoteGenre}</Genre>
+        <div onClick={clickHandler}>
+            <Quote>{quoteText || ''}</Quote>
+            <Author genre={quoteGenre || ''} author={quoteAuthor} />
         </div>
     );
 };
